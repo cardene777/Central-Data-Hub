@@ -10,8 +10,6 @@ This data can be managed by the NFT and can be changed as desired by the NFT hol
 The NFT can also be used by various Dapps by storing the URLs of the data stored in the various "DACS" in the metadata and contracts.
 This allows mutual access between Dapps and the CDH to play the role of a data centre.
 
-Translated with www.DeepL.com/Translator (free version)
-
 ## Motivation
 
 The NFT metadata used by Ethereum and other NFTs contains very little data such as "name", "description" and "image".
@@ -24,8 +22,6 @@ For example, suppose you have Dapps_A and Dapps_B.
 If specific data is stored in "DACS" for each address in each of these Dapps, it is possible to create fields "Dapps_A" and "Dapps_B" in the CDH metadata and have each Dapps retrieve data via the CDH.
 It is also possible to access data from Dapps_A to Dapps_B and from Dapps_B to Dapps_A, thus facilitating interaction between Dapps.
 In this way, the various Dapps use the CDH as a hub for exchanging data, making the chain more active and enjoyable for participating users and enabling developers to build a wider variety of applications.
-
-Translated with www.DeepL.com/Translator (free version)
 
 ## Specification
 
@@ -146,8 +142,6 @@ Cross Value Chain has a zero gas cost, so if you have a lot of addresses, you ca
 There is no limit to the number of NFTs that can be issued, so issuing unlimited NFTs is not a problem.
 However, you may need to pay for the creation of communities or other mechanisms in the future.
 Putting a price on the Mint of the NFT will allow sales here to be used for future updates.
-
-Translated with www.DeepL.com/Translator (free version)
 
 ### SBT or...
 
