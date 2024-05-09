@@ -1,0 +1,28 @@
+# dependencies
+node_modules
+
+# env files
+.env
+
+# coverage
+coverage
+coverage.json
+
+# typechain
+typechain
+typechain-types
+/types
+
+# hardhat files
+cache
+artifacts
+
+# zkSync files
+artifacts-zk
+cache-zk
+
+# deployments
+deployments/localhost
+
+# other
+temp
