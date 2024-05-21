@@ -266,7 +266,7 @@ This could lead to vulnerability, so deletion is not possible.
 There are many distributed storage options, such as IPFS and Arweave.
 "DACS" as well as the URLs of such distributed storage can be stored as values, so they can be used in an extensible way.
 
-! [links](. /images/CVCIP/links.png)
+![links](../images/CVCIP/links.png)
 
 ~~### Either the type of fieldName is of type `uint` or `string`~~
 
