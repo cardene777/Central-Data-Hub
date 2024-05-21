@@ -48,18 +48,18 @@ The procedure for adding and updating is as follows.
 2. access DACS from the CDH contract and check whether the executing address is authorised to add or update data
 3. after the authorisation has been confirmed, write the data to DACS.
 
-![flow.png](./images/CVCIP/flow.png)
+![flow.png](../images/CVCIP/flow.png)
 
 Within the metadata associated with each NFT, various fields are defined, the values of which are all URLs to data stored in DACS.
 The structure is such that the data exists at the destination of this URL.
 
-![links](./images/CVCIP/links.png)
+![links](../images/CVCIP/links.png)
 
 The overall structure is that the metadata associated with the NFT is first stored in the DACS, and the contents of that data include each field and the URLs of DACS, IPFS, Arweave, etc.
 The data used by each Dapps and BCG is then stored at the end of that URL.
 This structure makes it possible to update the data used by each Dapps and BCG without changing the URLs in the metadata directly linked to the NFT.
 
-![data_flow](./images/CVCIP/data_flow.png)
+![data_flow](../images/CVCIP/data_flow.png)
 
 ### ERC6551
 
