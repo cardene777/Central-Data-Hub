@@ -10,8 +10,6 @@ This data can be managed in conjunction with the NFT and can be changed as desir
 The NFT can also be used in various Dapps by storing metadata and URLs of the data stored in the various "DACS" in the contract.
 This allows the CDH to act as a centre of excellence for data, making it mutually accessible between Dapps.
 
-Translated with www.DeepL.com/Translator (free version)
-
 ## Motivation
 
 The NFT metadata used in Ethereum and elsewhere contains only limited data, such as "name", "description" and "image".
@@ -233,8 +231,6 @@ Managing metadata directly in the contract is also done in Ethereum.
 However, there are gas costs for each update and data capacity issues.
 In the case of Cross Value Chain, I don't think that capacity will be that much of a bottleneck because of the fact that there are no gas costs and because only DACS and IPFS URLs will be stored.
 
-Translated with www.DeepL.com/Translator (free version)
-
 ```solidity
 return
 	string(
@@ -271,8 +267,6 @@ There are many distributed storage options, such as IPFS and Arweave.
 "DACS" as well as the URLs of such distributed storage can be stored as values, so they can be used in an extensible way.
 
 ! [links](. /images/CVCIP/links.png)
-
-Translated with www.DeepL.com/Translator (free version)
 
 ~~### Either the type of fieldName is of type `uint` or `string`~~
 
