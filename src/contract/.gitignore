@@ -12,6 +12,7 @@ node_modules
 # eslint
 .eslintcache
 
+.history
 # misc
 .DS_Store
 
