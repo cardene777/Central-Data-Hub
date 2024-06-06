@@ -1,0 +1,3 @@
+[submodule "src/contract/packages/hardhat/lib/chimera"]
+	path = src/contract/packages/hardhat/lib/chimera
+	url = https://github.com/Recon-Fuzz/chimera
