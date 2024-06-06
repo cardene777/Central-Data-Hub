@@ -7,11 +7,11 @@ import "~~/styles/globals.css";
 const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : `http://localhost:${process.env.PORT || 3000}`;
-const imageUrl = `${baseUrl}/thumbnail.jpg`;
+const imageUrl = "https://res.cloudinary.com/dplp5wtzk/image/upload/v1717670511/CDH/cdh.png";
 
-const title = "Scaffold-ETH 2 App";
-const titleTemplate = "%s | Scaffold-ETH 2";
-const description = "Built with 🏗 Scaffold-ETH 2";
+const title = "Central Data Hub";
+const titleTemplate = "Central Data Hub";
+const description = "Central Data Hub";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     description,
   },
   icons: {
-    icon: [{ url: "/favicon.png", sizes: "32x32", type: "image/png" }],
+    icon: [{ url: "/icon/cdh.png", sizes: "32x32", type: "image/png" }],
   },
 };
 
