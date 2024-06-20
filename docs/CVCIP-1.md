@@ -5,27 +5,32 @@ NFT to manage all data in one place.
 ## Abstract
 
 NFT contract to manage all data in one place.
-Various data can be placed in on-chain storage called "DACS" in the Cross Value Chain.
-This data can be managed in conjunction with the NFT and can be changed as desired by the NFT holder or Dapps.
-The NFT can also be used in various Dapps by storing metadata and URLs of the data stored in the various "DACS" in the contract.
-This allows the CDH to act as a centre of excellence for data, making it mutually accessible between Dapps.
+The Cross Value Chain can contain a variety of data in on-chain storage called "DACS".
+
+[https://sustainable.cross.technology/jp/crosstech/technology](https://sustainable.cross.technology/jp/crosstech/technology)
+[https://docs.crossvalue.io/whitepaper/dacs-node-architecture-and-sustainable-generation-manager](https://docs.crossvalue.io/whitepaper/dacs-node-architecture-and-sustainable-generation-manager)
+
+This data can be tied to NFTs for management, so that NFT metadata (JSON) is stored.
+This allows NFT holders and individual Dapps to freely change the metadata associated with the NFT.
+The metadata stores the URLs of other data stored in "DACS", so that various data can be retrieved from the metadata associated with the NFT, such as saving the required data on specific Dapps or reading the data stored by other Dapps.
+In addition, **ERC6551** can be used to tie a Token Bound Account (TBA) to an NFT, allowing the NFT to hold other NFTs, FTs and native tokens.
+This allows the CDH to play the role of a data centre, for example by enabling mutual access between Dapps.
 
 ## Motivation
 
-The NFT metadata used in Ethereum and elsewhere contains only limited data, such as "name", "description" and "image".
-The NFT metadata used by Ethereum and other NFTs contains very little data such as "name", "description" and "image".
-Some NFTs allow customisation of metadata freely, but they are only aware of the marketplaces such as Opensea, and do not make full use of the metadata.
-Extending this metadata to define a variety of fields will broaden the use of NFTs.
-The Cross Value Chain natively supports the on-chain storage "DACS" as a chain, which allows a variety of data to be placed here.
-Details on how to access this data could not be read from the documentation, but we believe it can probably be accessed via a URL, for example.
-By defining several pieces of data in the metadata, with the URL as the value and the key as the field name, it is possible to manage various types of data in the metadata.
-For example, suppose you have Dapps_A and Dapps_B.
-If specific data is stored in "DACS" for each address in each of these Dapps, it is possible to create fields "Dapps_A" and "Dapps_B" in the CDH metadata and have each Dapps retrieve data via the CDH.
-It is also possible to access data from Dapps_A to Dapps_B and from Dapps_B to Dapps_A, thus facilitating interaction between Dapps.
-In this way, the various Dapps use the CDH as a hub for exchanging data, making the chain more active and enjoyable for participating users and enabling developers to build a wider variety of applications.
+The metadata of most NFTs used in Ethereum and elsewhere contain only limited data, such as "name", "description" and "image".
+Some NFTs are free to customise their metadata, but they are only aware of the marketplaces, such as Opensea, and do not make full use of the metadata.
 
-For example, suppose there are **Dapps_A** and **Dapps_B\***.
-If specific data is stored in "DACS" for each address in each of these Dapps, it would be possible to create fields "Dapps_A" and "Dapps_B" in the CDH metadata and retrieve the data from each Dapps via the CDH.
+[https://docs.opensea.io/docs/metadata-standards](https://docs.opensea.io/docs/metadata-standards)
+
+This metadata can be extended to define a variety of fields, thus broadening the use of NFT.
+The Cross Value Chain natively supports "DACS" on-chain storage as part of the chain, so a variety of data can be placed here.
+Details on how to access this data could not be read from the documentation, but we believe it can probably be accessed via a URL or similar.
+By defining multiple data in metadata using the key-value method, where the URL is the value and the field name is the key, it is possible to manage various data in the metadata.
+
+For example, suppose there are **Dapps_A** and **Dapps_B***.
+When the address connected to each of these Dapps is the same, the metadata associated with the CDH NFT associated with that address is stored in "DACS".
+By adding the fields "Dapps_A" and "Dapps_B" in the CDH metadata, it is possible to retrieve data from the respective Dapps via the CDH.
 
 ```json
 {
@@ -35,41 +40,63 @@ If specific data is stored in "DACS" for each address in each of these Dapps, it
 ```
 
 It also facilitates interaction between Dapps by allowing **Dapps_A** to access data from **Dapps_B** and **Dapps_B** to access data from **Dapps_A**.
-In this way, the various Dapps use the CDH as a hub to exchange data, making the chain more active and enjoyable for participating users and enabling developers to build a wider variety of applications.
+In this way, the various Dapps use the CDH as a hub for exchanging data, making the chain more active and enjoyable for participating users and enabling developers to build a wider variety of applications.
 
 ![dapp_hub](../images/CVCIP/dapp_hub.png)
 
 ## Specification
 
-Only the holder of the NFT or an address authorised by the holder can add or update metadata.
+### Field registration
+
+First, each Dapps or BCG platform needs to register a field.
+The image is like the Ethereum chain ID, where a unique field ID is assigned, such as "`1`: "CDH", `2`: "CDN""".
+This allows you to register fields for use in each Dapps and BCG, so that when you add data to the CDH NFT metadata, you can see which Dapps and BCG each field ID is used for.
+
+![field](../images/CVCIP/field.png)
+
+By storing it in the contract, a unique number can be tied to Dapps and BCGs.
+In the case of Ethereum chain IDs, they are managed off-chain, so chain IDs can clash.
+(e.g. Astar's Shibuya testnet and Japan Open Chain's chain ID were the same).
+CDH can solve this conflict problem by managing with contracts.
+Updates to registered field information can only be performed from the registered address.
+
+### Adding data.
+
+Only the holder of the NFT, or an address authorised by the holder, can add or update metadata.
 The procedure for adding and updating is as follows.
 
-1. send the fields, values and tokenId to be added to the metadata to the CDH contract.
-2. access DACS from the CDH contract and check whether the executing address is authorised to add or update data
-3. after the authorisation has been confirmed, write the data to DACS.
+1. send the field (number) and value to be added to the metadata, the `tokenId` and the signature of the address to the CDH contract.
+2. verify the signature and check the holder and operator information of the relevant `tokenId` in the CDH contract, and check whether the executing address is authorised to add or update the data
+3. after the authorisation is confirmed, update the metadata from off-chain.
 
 ![flow.png](../images/CVCIP/flow.png)
 
-Within the metadata associated with each NFT, various fields are defined, the values of which are all URLs to data stored in DACS.
-The structure is such that the data exists at the destination of this URL.
+The "DACS" URL associated with each field ID contains the data used by each Dapps and BCG.
+
+![field_data](../images/CVCIP/field_data.png)
+
+Within the metadata associated with each NFT, various fields are defined, the values of which are all URLs to data stored within DACS.
+The data is located at the destination of this URL.
 
 ![links](../images/CVCIP/links.png)
 
-The overall structure is that the metadata associated with the NFT is first stored in the DACS, and the contents of that data include each field and the URLs of DACS, IPFS, Arweave, etc.
-The data used by each Dapps and BCG is then stored at the end of that URL.
-This structure makes it possible to update the data used by each Dapps and BCG without changing the URLs in the metadata directly linked to the NFT.
+The overall structure is that, firstly, metadata linked to the NFT is stored in DACS, which contains each field ID and URLs for DACS, IPFS, Arweave, etc.
+Then, at the end of that URL, the data used by each Dapps and BCG is stored.
+This configuration makes it possible to update the data used by each Dapps and BCG without changing the URLs in the metadata directly linked to the NFT.
 
 ![data_flow](../images/CVCIP/data_flow.png)
 
 ### ERC6551
 
-ERC6551 is used to tie NFT data to CDH.
-The ERC6551 creates Token Bound Accounts (TBAs) for NFTs in ERC721 format, which can receive other NFTs and other data tied to an NFT on a one-to-one basis.
-This makes it possible to link and manage a variety of NFTs, not just data stored in DACS.
+ERC6551 is used to tie NFT data to CDHs.
+The ERC6551 creates Token Bound Accounts (TBAs) on NFTs in ERC721 format, which can receive other NFTs, FTs and native tokens tied one-to-one to the NFT.
+This makes it possible to link and manage various on-chain data, not only data stored in DACS.
+
+![tba](../images/CVCIP/tba.png)
 
 ### Metadata Field
 
-When storing data in metadata, field names are managed numerically, similar to EVM Chain IDs.
+When storing data in metadata, field names are managed numerically, as is the EVM Chain ID.
 
 ```bash
 {
@@ -260,38 +287,14 @@ Function to retrieve the TBA account associated with the NFT held by the EOA add
 
 ## Rationale
 
-### Unable to access DACS from the contrakt
+### Accessing DACS from the contract
 
-You may not be able to access DACS directly from the contract.
-As DACS, a distributed DB, is built natively into the chain, we expect to be able to access the data in DACS directly from the contract, but initially we will use IPFS, or if it seems difficult to access DACS from the contract in the first place, on-chain. We are also considering inscribing metadata.
-
-Managing metadata directly in the contract is also done in Ethereum.
-However, there are gas costs for each update and data capacity issues.
-In the case of Cross Value Chain, I don't think that capacity will be that much of a bottleneck because of the fact that there are no gas costs and because only DACS and IPFS URLs will be stored.
-
-```solidity
-return
-	string(
-		abi.encodePacked(
-			"data:application/json;base64,",
-			Base64.encode(
-				bytes(
-					abi.encodePacked(
-						'{"name": "CDH #',
-						Strings.toString(tokenId),
-						'", "description": "CDH NFT", "image": "',
-						uri,
-						'", "Dapp_A": "',
-						Dapp_A,
-						'", "Dapp_B": "',
-						Dapp_B,
-						'"}'
-					)
-				)
-			)
-		)
-	);
-```
+The current design assumes that DACS cannot be accessed from the contract, and that the data is updated off-chain primarily.
+Initially, the design assumes that DACS data will be stored on IPFS or similar.
+If the DACS can be accessed from the contract, we are considering inscribing metadata on-chain.
+Managing metadata directly from the contract is also done in Ethereum.
+However, there are gas costs and data capacity issues with each update.
+In the case of Cross Value Chain, I don't think the capacity will be that much of a bottleneck because there is no gas cost and only the DACS or IPFS URLs will be stored. m
 
 ### Delete Metadata Field.
 
