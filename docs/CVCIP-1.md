@@ -334,8 +334,18 @@ Managing them in a separate mapping array makes them easier to access and ensure
 
 ### Integration with Name Service
 
-When a Name Service like ENS is created on the Cross Value Chain, we are also considering linking to that Name Service.
-We are trying to provide wider access, for example by enabling data to be retrieved in a way that is tied to a specific Name Service.
+~~When a Name Service like ENS is created on the Cross Value Chain, we are also considering linking to that Name Service.~~
+~~We are trying to provide wider access, for example by enabling data to be retrieved in a way that is tied to a specific Name Service.~~
+
+In conjunction with CDNs, addresses can be associated with human-identifiable names.
+
+[CDN](https://github.com/mashharuki/CDN/tree/main)
+
+Only one CDH can be owned per address.
+This allows you to manage all the information associated with that address, but it can be difficult to remember the address name.
+As address poisoning and other forms of address poisoning are prevalent, it is desirable to give the address a name that is easy to identify.
+What is useful here is a service called Name Service, which ties an easily identifiable name to an address.
+Name services called CDNs exist on CROSS VALUE CHAIN, so CDH can be used more easily in conjunction with these services.
 
 ### Price it or not
 

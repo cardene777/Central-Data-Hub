@@ -335,8 +335,18 @@ IPFS や Arweave など、分散型ストレージはたくさんあります。
 
 ### Name Service との統合
 
-Cross Value Chain 上に ENS のような Name Service が作成されたとき、その Name Service との連携も考えています。
-特定の Name Service に紐づく形でデータを取得できるようにするなど、より幅広いアクセスを提供しようとしています。
+~~Cross Value Chain 上に ENS のような Name Service が作成されたとき、その Name Service との連携も考えています。~~
+~~特定の Name Service に紐づく形でデータを取得できるようにするなど、より幅広いアクセスを提供しようとしています。~~
+
+CDNと連携して、アドレスに人間が識別しやすい名前を紐づけられるようにしました。
+
+[CDN](https://github.com/mashharuki/CDN/tree/main)
+
+CDHはアドレス1つにつき1つしか所有できません。
+そのため、そのアドレスに紐づく情報を全て管理できますが、アドレス名を覚えるのは大変です。
+アドレスポイズニングなどが流行っていることもあり、識別しやすい名前をつけることが望ましいです。
+ここで役に立つのがName Serviceと呼ばれる、アドレスに識別しやすい名前を紐づけるサービスです。
+CDNと呼ばれるName ServiceがCROSS VALUE CHAIN上に存在するため、そのサービスと連携することでよりCDHが使用しやすくなります。
 
 ### 価格をつけるか
 
