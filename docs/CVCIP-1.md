@@ -28,7 +28,7 @@ The Cross Value Chain natively supports "DACS" on-chain storage as part of the c
 Details on how to access this data could not be read from the documentation, but we believe it can probably be accessed via a URL or similar.
 By defining multiple data in metadata using the key-value method, where the URL is the value and the field name is the key, it is possible to manage various data in the metadata.
 
-For example, suppose there are **Dapps_A** and **Dapps_B***.
+For example, suppose there are **Dapps_A** and **Dapps_B\***.
 When the address connected to each of these Dapps is the same, the metadata associated with the CDH NFT associated with that address is stored in "DACS".
 By adding the fields "Dapps_A" and "Dapps_B" in the CDH metadata, it is possible to retrieve data from the respective Dapps via the CDH.
 
@@ -287,14 +287,31 @@ Function to retrieve the TBA account associated with the NFT held by the EOA add
 
 ## Rationale
 
+### Changing IPFS data.
+
+IPFS is given a unique CID once it is uploaded.
+To change the data afterwards, it has to be uploaded again and the CID is changed.
+In other words, the metadata cannot be changed.
+I don't know how it works in DACS, but there are mechanisms like variable references in IPFS.
+
+[https://docs.ipfs.tech/concepts/file-systems/#mutable-file-system-mfs](https://docs.ipfs.tech/concepts/file-systems/#mutable-file -system-mfs)
+
+By using this mechanism, instead of accessing the content directly, it can act as a Gateway by intermediating at a specific URL.
+By changing the content at that destination, data can be changed in a flexible manner.
+
+A similar mechanism also exists on Arweave.
+A product called Iris provides exactly the same mechanism.
+
+[https://docs.irys.xyz/developer-docs/mutable-references](https://docs.irys.xyz/developer-docs/mutable-references)
+
 ### Accessing DACS from the contract
 
 The current design assumes that DACS cannot be accessed from the contract, and that the data is updated off-chain primarily.
 Initially, the design assumes that DACS data will be stored on IPFS or similar.
 If the DACS can be accessed from the contract, we are considering inscribing metadata on-chain.
 Managing metadata directly from the contract is also done in Ethereum.
-However, there are gas costs and data capacity issues with each update.
-In the case of Cross Value Chain, I don't think the capacity will be that much of a bottleneck because there is no gas cost and only the DACS or IPFS URLs will be stored. m
+In the case of Cross Value Chain, the gas cost is not a major concern because of the low gas cost and the fact that the gas cost is incurred when registering DACS and IPFS URLs in CDH.
+Also, data capacity is not a problem unless a significant amount of data is stored, as the data used in Dapps and BCGs is not that large.
 
 ### Delete Metadata Field.
 
@@ -323,15 +340,15 @@ We are trying to provide wider access, for example by enabling data to be retrie
 ### Price it or not
 
 We are considering putting a per-address price on NFT's Mint.
-Cross Value Chain has a zero gas cost, so if you have a lot of addresses, you can issue as many as you want.
+Cross Value Chain is cheap, so if you have a lot of addresses, you can only issue so many of them.
 There is no limit to the number of NFTs that can be issued, so issuing unlimited NFTs is not a problem.
 However, you may need to pay for the creation of communities or other mechanisms in the future.
 Putting a price on the Mint of the NFT will allow sales here to be used for future updates.
 
 ### SBT or...
 
-Since this NFT takes the form of an address, it seems more natural that it should not be transferable.
-The ability to transfer increases the range of things that can be done, but it may also reduce security, e.g. transfers due to incorrect approvals.
+It is natural that this NFT cannot `transfer`, as it is tied to an address.
+The ability to `transfer` increases the range of what can be done, but may also reduce security, e.g. due to incorrect `approve` of a `transfer`.
 
 ## Reference Implementation
 

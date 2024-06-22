@@ -10,26 +10,26 @@ Cross Value Chain には"DACS"と呼ばれるオンチェーンストレージ�
 [https://sustainable.cross.technology/jp/crosstech/technology](https://sustainable.cross.technology/jp/crosstech/technology)
 [https://docs.crossvalue.io/whitepaper/dacs-node-architecture-and-sustainable-generation-manager](https://docs.crossvalue.io/whitepaper/dacs-node-architecture-and-sustainable-generation-manager)
 
-このデータは NFT に紐づいて管理ができるため、NFTのメタデータ（JSON）を保存します。
-これにより、NFT 保有者や各Dappsから自由にNFTに紐づいたメタデータを変更することができます。
-メタデータには"DACS"に保存されている他のデータの URL を保存し、特定のDapps上で必要なデータを保存したり、他のDappsによって保存されたデータを読み取るなどしてNFTに紐づくメタデータからさまざまなデータを取得できます。
-また、**ERC6551**を使用して、NFTにTBA（Token Bound Account）を紐づけることで、NFTが他のNFTやFT、ネイティブトークンを保有することができます。
-これにより Dapps間で相互にアクセスが可能になるなどデータの中心地の役割を CDH が果たします。
+このデータは NFT に紐づいて管理ができるため、NFT のメタデータ（JSON）を保存します。
+これにより、NFT 保有者や各 Dapps から自由に NFT に紐づいたメタデータを変更することができます。
+メタデータには"DACS"に保存されている他のデータの URL を保存し、特定の Dapps 上で必要なデータを保存したり、他の Dapps によって保存されたデータを読み取るなどして NFT に紐づくメタデータからさまざまなデータを取得できます。
+また、**ERC6551**を使用して、NFT に TBA（Token Bound Account）を紐づけることで、NFT が他の NFT や FT、ネイティブトークンを保有することができます。
+これにより Dapps 間で相互にアクセスが可能になるなどデータの中心地の役割を CDH が果たします。
 
 ## Motivation
 
-Ethereum などで使用されているほとんどのNFTのメタデータには、"name", "description", "image"など、限られたデータしか格納されていません。
-NFTによっては自由にメタデータをカスタムしているが、Opensea などのマーケットプレイスなどへの対応のみに意識がいきメタデータを活用しきれていません。
+Ethereum などで使用されているほとんどの NFT のメタデータには、"name", "description", "image"など、限られたデータしか格納されていません。
+NFT によっては自由にメタデータをカスタムしているが、Opensea などのマーケットプレイスなどへの対応のみに意識がいきメタデータを活用しきれていません。
 
 [https://docs.opensea.io/docs/metadata-standards](https://docs.opensea.io/docs/metadata-standards)
 
 このメタデータを拡張し、様々なフィールドを定義するようにすることで、NFT の活用の幅が広がります。
 Cross Value Chain ではチェーンとして、ネイティブにオンチェーンストレージである"DACS"をサポートしているため、ここに様々なデータを載せることができます。
 このデータにアクセスする方法の詳細はドキュメントから読み取ることができませんでしたが、おそらく URL などでアクセスできると考えています。
-この URL を値（value）に、フィールド名をキー（key）にしたkey-value方式でデータをメタデータ内に複数定義することで、メタデータで様々なデータを管理することができるようになります。
+この URL を値（value）に、フィールド名をキー（key）にした key-value 方式でデータをメタデータ内に複数定義することで、メタデータで様々なデータを管理することができるようになります。
 
 例えば、**Dapps_A** と **Dapps_B** があるとします。
-この各 Dapps に接続したアドレスが同じである時、そのアドレスに紐づいたCDH NFTに紐づいたメタデータが"DACS"に保存されています。
+この各 Dapps に接続したアドレスが同じである時、そのアドレスに紐づいた CDH NFT に紐づいたメタデータが"DACS"に保存されています。
 CDH のメタデータ内に「"Dapps_A"」と「"Dapps_B"」というフィールドを追加して、それぞれの Dapps から CDH を経由してデータを取得することが可能になります。
 
 ```json
@@ -48,16 +48,16 @@ CDH のメタデータ内に「"Dapps_A"」と「"Dapps_B"」というフィー�
 
 ### フィールド登録
 
-まずは、各DappsやBCGプラットフォームがフィールド登録する必要があります。
-EthereumのチェーンIDのように「`1`: "CDH", `2`: "CDN"」のようにユニークなフィールドIDが割り当てられるイメージです。
-これにより、各DappsやBCGで使用するためのフィールドを登録でき、CDH NFTのメタデータにデータを追加した時に、各フィールドIDがどのDappsやBCGで使用されているデータかを確認できるようにないます。
+まずは、各 Dapps や BCG プラットフォームがフィールド登録する必要があります。
+Ethereum のチェーン ID のように「`1`: "CDH", `2`: "CDN"」のようにユニークなフィールド ID が割り当てられるイメージです。
+これにより、各 Dapps や BCG で使用するためのフィールドを登録でき、CDH NFT のメタデータにデータを追加した時に、各フィールド ID がどの Dapps や BCG で使用されているデータかを確認できるようにないます。
 
 ![field](../images/CVCIP/field.png)
 
-コントラクトに保存することで、一意の番号をDappsやBCGに紐づけることができます。
-EthereumのチェーンIDの場合あくまでオフチェーンで管理しているため、チェーンIDがぶつかってしまうことがあります。
-（AstarのShibuyaテストネットとJapan Open ChainのチェーンIDが同じになってしまっていたことなど）
-CDHではコントラクトで管理することで、この競合問題を解消できます。
+コントラクトに保存することで、一意の番号を Dapps や BCG に紐づけることができます。
+Ethereum のチェーン ID の場合あくまでオフチェーンで管理しているため、チェーン ID がぶつかってしまうことがあります。
+（Astar の Shibuya テストネットと Japan Open Chain のチェーン ID が同じになってしまっていたことなど）
+CDH ではコントラクトで管理することで、この競合問題を解消できます。
 登録したフィールド情報の更新は、登録したアドレスからのみ実行できます。
 
 ### データの追加
@@ -66,12 +66,12 @@ NFT の保有者、もしくは保有者によって許可を与えられたア�
 追加・更新の手順は以下になります。
 
 1. メタデータに追加したいフィールド（番号）と値、`tokenId`、アドレスの署名を CDH コントラクトに送る。
-2. 署名の検証とCDH コントラクトで該当の`tokenId`の保有者及びoperator情報を確認し、実行アドレスにデータの追加・更新権限があるかをチェック。
+2. 署名の検証と CDH コントラクトで該当の`tokenId`の保有者及び operator 情報を確認し、実行アドレスにデータの追加・更新権限があるかをチェック。
 3. 権限の確認が取れたのち、オフチェーンからメタデータを更新する。
 
 ![flow.png](../images/CVCIP/flow.png)
 
-各フィールドIDに紐づく"DACS"のURLには、各DappsやBCGで使用されているデータが保存されいています。
+各フィールド ID に紐づく"DACS"の URL には、各 Dapps や BCG で使用されているデータが保存されいています。
 
 ![field_data](../images/CVCIP/field_data.png)
 
@@ -80,7 +80,7 @@ NFT の保有者、もしくは保有者によって許可を与えられたア�
 
 ![links](../images/CVCIP/links.png)
 
-全体の構成としては、まずNFTに紐づくメタデータが DACS 内に保存されていて、そのデータの中身は各フィールドIDと DACS や IPFS、Arweave などの URL が格納されています。
+全体の構成としては、まず NFT に紐づくメタデータが DACS 内に保存されていて、そのデータの中身は各フィールド ID と DACS や IPFS、Arweave などの URL が格納されています。
 そして、その URL の先に各 Dapps や BCG で使用されるデータが格納されています。
 この構成を取ることで、NFT に直接紐づくメタデータ内の URL を変更することなく、各 Dapps や BCG で使用するデータを更新することが可能になります。
 
@@ -89,7 +89,7 @@ NFT の保有者、もしくは保有者によって許可を与えられたア�
 ### ERC6551
 
 NFT のデータを CDH に紐づけるために、ERC6551 を使用します。
-ERC6551 は ERC721 形式の NFT に TBA（Token Bound Accounts）というものを作成し、NFT に1対1で紐づいて他の NFTやFT、ネイティブトークンなどを受け取ることができます。
+ERC6551 は ERC721 形式の NFT に TBA（Token Bound Accounts）というものを作成し、NFT に 1 対 1 で紐づいて他の NFT や FT、ネイティブトークンなどを受け取ることができます。
 これにより、DACS に保存されているデータに限らず、様々なオンチェーンデータを紐付けて管理可能になります。
 
 ![tba](../images/CVCIP/tba.png)
@@ -271,30 +271,48 @@ NFT の所有者か許可されたアドレスのみ実行可能です。
 
 #### tokenMetadatas
 
-token idに紐づくメタデータを取得する関数です。
+token id に紐づくメタデータを取得する関数です。
 
 #### eoaToTokenId
 
-EOAアドレスから保有しているNFTのtoken idを取得する関数です。
+EOA アドレスから保有している NFT の token id を取得する関数です。
 
 #### tokenIdToTbaAccount
 
-NFTのtoken idからNFTに紐づくTBAアカウントを取得する関数です。
+NFT の token id から NFT に紐づく TBA アカウントを取得する関数です。
 
 #### eoaToTbaAccount
 
-EOAアドレスが保有するNFTに紐づくTBAアカウントをEOAアドレスから取得する関数です。
+EOA アドレスが保有する NFT に紐づく TBA アカウントを EOA アドレスから取得する関数です。
 
 ## Rationale
 
-### コントラクトからDACSにアクセスする
+### IPFS のデータ変更
 
-現状の設計では、コントラクトからDACSにアクセスできないことを前提に、オフチェーン主体でデータの更新を行います。
-初期はDACSのデータの保存先もIPFSなどになると思うので、それを想定した設計になっています。
-もし、コントラクトからDACSにアクセスできるようであれば、オンチェーンにメタデータを刻むことも考えています。
+IPFS は一度アップロードすると固有の CID が付与されます。
+その後データを変更するには、再度アップロードが必要になり CID が変更されてしまいます。
+つまり、メタデータの変更ができません。
+DACS ではどのようになるかわかりませんが、可変参照のような仕組みが IPFS には存在します。
+
+[https://docs.ipfs.tech/concepts/file-systems/#mutable-file-system-mfs](https://docs.ipfs.tech/concepts/file-systems/#mutable-file-system-mfs)
+
+この仕組みを利用することで、直接コンテンツにアクセスするのではなく、特定の URL で仲介を行い Gateway のような役割を担うことができます。
+その先のコンテンツを変更することで柔軟にデータの変更が行えます。
+
+また、Arweave 上にも同じような仕組みが存在します。
+Iris というプロダクトがまさに同じような仕組みを提供しています。
+
+[https://docs.irys.xyz/developer-docs/mutable-references](https://docs.irys.xyz/developer-docs/mutable-references)
+
+### コントラクトから DACS にアクセスする
+
+現状の設計では、コントラクトから DACS にアクセスできないことを前提に、オフチェーン主体でデータの更新を行います。
+初期は DACS のデータの保存先も IPFS などになると思うので、それを想定した設計になっています。
+もし、コントラクトから DACS にアクセスできるようであれば、オンチェーンにメタデータを刻むことも考えています。
 コントラクトから直接メタデータを管理することは Ethereum でも行われています。
 ただ、更新のたびにガス代がかかったり、データ容量の問題があります。
-Cross Value Chain の場合は、ガス代が無料という点と、DACS や IPFS の URL のみの保存になるため、そこまで容量がボトルネックになることはないと思っています。
+Cross Value Chain の場合は、ガス代安い点と、CDH では DACS や IPFS の URL を登録するの時にガス代が発生するためガス代の点はあまり気にする必要はありません。
+また、データ容量についても、Dapps や BCG で使用されるデータはそこまで多くないので、相当量のデータを保存しない限り問題にはなりません。
 
 ### Metadata Field の削除
 
@@ -323,15 +341,15 @@ Cross Value Chain 上に ENS のような Name Service が作成されたとき�
 ### 価格をつけるか
 
 NFT の Mint にあたり価格をつけるか検討しています。
-Cross Value Chain はガス代が 0 なため、アドレスをたくさん用意すればその分だけ発行できてしまいます。
+Cross Value Chain が安いため、アドレスをたくさん用意すればその分だけ発行できてしまいます。
 特に上限は設けないため、無制限に NFT を発行すること自体は問題ないです。
 しかし、今後コミュニティなどを作成したり、他の仕組みなどを導入する際に費用が必要になるかもしれません。
 NFT の Mint に価格をつけることで、ここでの売り上げが将来のアップデートに活用できるようになります。
 
 ### SBT にするか
 
-この NFT はアドレスに紐づく形を取るため、transfer できない方が自然に思えます。
-transfer ができることでできることの幅も広がりますが、誤った approve による transfer などセキュリティが下がることが考えられます。
+この NFT はアドレスに紐づく形を取るため、`transfer` できない方が自然です。
+`transfer` ができることでできることの幅も広がりますが、誤った `approve` による `transfer` などセキュリティが下がることが考えられます。
 
 ## Reference Implementation
 
