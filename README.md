@@ -5,6 +5,7 @@ NFT for bulk data management.
 
 - [English docs](https://github.com/cardene777/Central-Data-Hub/blob/develop/docs/CVCIP-1.md){:target="_blank"}
 - [Japanese docs](https://github.com/cardene777/Central-Data-Hub/blob/develop/docs/CVCIP-1_jp.md){:target="_blank"}
+- <a href="https://github.com/cardene777/Central-Data-Hub/blob/develop/docs/CVCIP-1_jp.md" target="_blank">Japanese docs</a>
 
 ## Site
 
