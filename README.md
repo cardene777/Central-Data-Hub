@@ -5,11 +5,14 @@ NFT for bulk data management.
 
 - [English docs](https://github.com/cardene777/Central-Data-Hub/blob/develop/docs/CVCIP-1.md)
 - [Japanese docs](https://github.com/cardene777/Central-Data-Hub/blob/develop/docs/CVCIP-1_jp.md)
+
 ## Site
 
 https://central-data-hub.vercel.app/
 
 https://github.com/cardene777/Central-Data-Hub/assets/61857866/74bdbb0d-5bcf-491f-83c1-f310a7d5a347
+
+https://github.com/cardene777/Central-Data-Hub/assets/61857866/47db09b1-ff46-422b-b9bc-4403b9e30e70
 
 | My CDH |
 | :------: |
