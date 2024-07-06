@@ -5,7 +5,6 @@ NFT for bulk data management.
 
 - [English docs](https://github.com/cardene777/Central-Data-Hub/blob/develop/docs/CVCIP-1.md)
 - [Japanese docs](https://github.com/cardene777/Central-Data-Hub/blob/develop/docs/CVCIP-1_jp.md)
-
 ## Site
 
 https://central-data-hub.vercel.app/
