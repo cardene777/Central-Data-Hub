@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.23;
+pragma solidity 0.8.25;
 
 interface ICDH {
 	// =============================================================
@@ -55,7 +55,7 @@ interface ICDH {
 	//                         EXTERNAL WRITE
 	// =============================================================
 
-	function safeMint(address to, string calldata uri) external;
+	function safeMint(address to, string calldata uri) external returns (uint256 tokenId);
 
 	function setPermittedEditor(
 		uint256 tokenId,

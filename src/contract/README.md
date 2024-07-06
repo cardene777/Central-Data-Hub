@@ -63,9 +63,9 @@ Run smart contract test with `yarn hardhat:test`
 
 | Contract Name |               Contract Address               | Explorer |
 | :-----------: | :------------------------------------------: | :------: |
-|    **CDH**    | `0xb2531b6730084CafE595d4579251b9983FADc717` | https://testnet.crossvaluescan.com/address/0xb2531b6730084CafE595d4579251b9983FADc717 |
-|    **ERC6551Account**    | `0x95a8eD5026AC829C4F02c051C2553891c9fD98C7` | https://testnet.crossvaluescan.com/address/0x95a8eD5026AC829C4F02c051C2553891c9fD98C7 |
-|    **ERC6551Registry**    | `0x9A898F020Db575A5Dd951189B8D44f6e4d84FF5B` | https://testnet.crossvaluescan.com/address/0x9A898F020Db575A5Dd951189B8D44f6e4d84FF5B |
+|    **CDH**    | `0xb56594536F08D747107C734376E3b908Ed3a02eD` | https://testnet.crossvaluescan.com/address/0xb56594536F08D747107C734376E3b908Ed3a02eD |
+|    **ERC6551Account**    | `0xDFc02e7eD1A119ceDD91cA4ff030F01F450912a9` | https://testnet.crossvaluescan.com/address/0xDFc02e7eD1A119ceDD91cA4ff030F01F450912a9 |
+|    **ERC6551Registry**    | `0xB25569E3F148941b0b07e4BfbF4Dca71BfBbb804` | https://testnet.crossvaluescan.com/address/0xB25569E3F148941b0b07e4BfbF4Dca71BfBbb804 |
 
 ## Sample Image
 

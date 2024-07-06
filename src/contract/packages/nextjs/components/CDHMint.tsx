@@ -3,8 +3,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useReadContract, useWriteContract } from "wagmi";
-import Modal from "~~/components/CDNModal";
+import ArweaveModal from "~~/components/ArweaveModal";
+import CDNModal from "~~/components/CDNModal";
 import { useTransactor } from "~~/hooks/scaffold-eth";
+import { uploadMetadata } from "~~/lib/arweave";
+import { DOMAIN_CONTRACT_ADDRESS } from "~~/lib/config";
 import domain from "~~/utils/Domains.json";
 import { Contract, ContractName } from "~~/utils/scaffold-eth/contract";
 
@@ -20,11 +23,13 @@ export const CDHMint = ({
 
   const [tokenId, setTokenId] = useState<number | null>(null);
   const [tba, setTba] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [uri, setUri] = useState<string>("");
-  const [showModal, setShowModal] = useState(false);
+  const [metadataUri, setMetadataUri] = useState<string>("");
+  const [showCDNModal, setShowModal] = useState(false);
+  const [showArweaveModal, setShowArweaveModal] = useState(false);
   const [domainName, setDomainName] = useState<string>("");
   const [domainRegisterYear, setDomainRegisterYear] = useState<number>(1);
-  // const [domains, setDomains] = useState<string[]>([]);
 
   const { data: result, writeContractAsync } = useWriteContract();
   const { refetch: tokenIdRefetch } = useReadContract({
@@ -49,43 +54,56 @@ export const CDHMint = ({
       retry: false,
     },
   });
+  const { refetch: metadataRefetch } = useReadContract({
+    address: deployedContractData?.address,
+    functionName: "tokenURI",
+    abi: deployedContractData?.abi,
+    args: [BigInt(tokenId ?? 0)],
+    chainId: 5555,
+    query: {
+      enabled: false,
+      retry: false,
+    },
+  });
 
-  // const { refetch: getPrice } = useReadContract({
-  //   address: "0xD3095061512BCEA8E823063706BB9B15F75b187b",
-  //   functionName: "price",
-  //   abi: domain.abi,
-  //   args: [domainName as any],
-  //   chainId: 5555,
-  //   query: {
-  //     enabled: true,
-  //     retry: true,
-  //   },
-  // });
+  const { refetch: getPrice } = useReadContract({
+    address: DOMAIN_CONTRACT_ADDRESS,
+    functionName: "price",
+    abi: domain.abi,
+    args: [domainName, domainRegisterYear],
+    chainId: 5555,
+    query: {
+      enabled: true,
+      retry: true,
+    },
+  });
 
-  // const { refetch: getOwnerDomains } = useReadContract({
-  //   address: "0xD3095061512BCEA8E823063706BB9B15F75b187b",
-  //   functionName: "ownerDomains",
-  //   abi: domain.abi,
-  //   args: [address],
-  //   chainId: 5555,
-  //   query: {
-  //     enabled: true,
-  //     retry: true,
-  //   },
-  // });
+  const { data: ownDomainName, refetch: getOwnerDomains } = useReadContract({
+    address: DOMAIN_CONTRACT_ADDRESS,
+    functionName: "getDomainsByOwner",
+    abi: domain.abi,
+    args: [address],
+    chainId: 5555,
+    query: {
+      enabled: true,
+      retry: true,
+    },
+  });
 
   const handleWrite = async () => {
     if (writeContractAsync) {
       try {
+        const metadataUri = await uploadMetadata(name, uri);
+        console.log(`metadataUri: ${metadataUri}`);
         const makeWriteWithParams = () =>
           writeContractAsync({
             address: deployedContractData?.address,
             functionName: "safeMint",
             abi: deployedContractData?.abi,
-            args: [address, uri],
+            args: [address, metadataUri],
           });
         await writeTxn(makeWriteWithParams);
-        // addIpfs
+        console.log(`result: ${result}`);
       } catch (e: any) {
         console.error("⚡️ ~ file: WriteOnlyFunctionForm.tsx:handleWrite ~ error", e);
       }
@@ -93,18 +111,22 @@ export const CDHMint = ({
   };
 
   const handleCDNWrite = async () => {
+    console.log("start handleCDNWrite");
     if (writeContractAsync) {
+      console.log("start writeContractAsync");
       try {
-        // await getPrice();
+        const price = await getPrice();
+        console.log(`price: ${price}`);
         const makeWriteWithParams = () =>
           writeContractAsync({
-            address: "0xD3095061512BCEA8E823063706BB9B15F75b187b",
+            address: DOMAIN_CONTRACT_ADDRESS,
             functionName: "register",
             abi: domain?.abi,
-            args: [domainName],
-            value: BigInt(0.001 * 10 ** 18),
+            args: [domainName, domainRegisterYear],
+            value: BigInt(price.data as any),
           });
         await writeTxn(makeWriteWithParams);
+        await getOwnerDomains();
       } catch (e: any) {
         console.error("⚡️ ~ file: WriteOnlyFunctionForm.tsx:handleWrite ~ error", e);
       }
@@ -115,6 +137,12 @@ export const CDHMint = ({
     const tokenId = await tokenIdRefetch();
     setTokenId(tokenId.data !== null ? Number(tokenId.data) : null);
   }, [tokenIdRefetch]);
+
+  const getMetadata = useCallback(async () => {
+    const metadata = await metadataRefetch();
+    console.log(`metadata: ${metadata}`);
+    setMetadataUri(metadata.data ?? "");
+  }, [metadataRefetch]);
 
   const getTbaAccount = useCallback(async () => {
     const tba = await tbaRefetch();
@@ -141,22 +169,39 @@ export const CDHMint = ({
   useEffect(() => {
     if (deployedContractData) getTokenId();
     if (deployedContractData) getTbaAccount();
-  }, [address, deployedContractData, getTokenId, getTbaAccount, tokenId, tba, result]);
-
-  // useEffect(() => {
-  //   checkCdn();
-  // }, [checkCdn]);
+    if (deployedContractData) getMetadata();
+    getOwnerDomains();
+  }, [
+    address,
+    deployedContractData,
+    getMetadata,
+    getOwnerDomains,
+    getTokenId,
+    getTbaAccount,
+    tokenId,
+    tba,
+    result,
+    metadataUri,
+  ]);
 
   return (
     <div className="flex flex-wrap -mx-2 w-full justify-center items-center">
-      <Modal
-        showModal={showModal}
+      <CDNModal
+        showModal={showCDNModal}
         onClose={() => setShowModal(false)}
         onSubmit={handleCDNWrite}
         domainName={domainName}
         setDomainName={setDomainName}
         domainRegisterYear={domainRegisterYear}
         setDomainRegisterYear={setDomainRegisterYear}
+      />
+      <ArweaveModal
+        showModal={showArweaveModal}
+        onClose={() => setShowArweaveModal(false)}
+        name={name}
+        setName={setName}
+        imageUrl={uri}
+        setImageUrl={setUri}
       />
       {tokenId !== null && tba ? (
         <div className="flex flex-col justify-center items-center space-y-10">
@@ -166,7 +211,6 @@ export const CDHMint = ({
             onClick={() => changeAddressInfoPage(tokenId!, address, tba)}
             className="w-full text-left max-w-sm rounded overflow-hidden shadow-lg flex flex-col items-start mt-4"
           >
-            {/* <Image className="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains" /> */}
             <div className="px-6 py-4">
               <div className="font-bold text-xl mb-2">CDH #{tokenId}</div>
               <p className="text-gray-700 text-base">
@@ -182,24 +226,35 @@ export const CDHMint = ({
                 <span className="break-all block">{tba}</span>
               </p>
               <p className="text-gray-700 text-base">
-                {/* <p className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                  CVCDNS
-                </p>{" "} */}
-                {/* <button
-                  onClick={() => setShowModal(true)}
-                  className="bg-secondary px-8 py-2 text-white rounded-md text-lg mt-2 font-semibold z-100"
-                >
-                  Mint CDN
-                </button> */}
+                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                  Metadata
+                </span>{" "}
+                <span className="break-all block">{metadataUri}</span>
               </p>
+              {(ownDomainName as any) && (
+                <p className="text-gray-700 text-base">
+                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                    CDN
+                  </span>{" "}
+                  <span className="break-all block">{String(ownDomainName) || ""}</span>
+                </p>
+              )}
             </div>
           </button>
-          <button
-            onClick={() => setShowModal(true)}
-            className="bg-secondary px-8 py-2 text-white rounded-md text-lg font-semibold"
-          >
-            Mint CDN
-          </button>
+          <div className="flex flex-row space-x-5">
+            {/* <button
+              onClick={() => setShowArweaveModal(true)}
+              className="bg-secondary px-8 py-2 text-white rounded-md text-lg font-semibold"
+            >
+              Add Metadata
+            </button> */}
+            <button
+              onClick={() => setShowModal(true)}
+              className="bg-secondary px-8 py-2 text-white rounded-md text-lg font-semibold"
+            >
+              Mint CDN
+            </button>
+          </div>
         </div>
       ) : (
         <>
@@ -208,7 +263,7 @@ export const CDHMint = ({
             type="text"
             value={uri}
             onChange={e => setUri(e.target.value)}
-            placeholder="Enter URI"
+            placeholder="Enter Image URI"
             className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none text-neutral"
           />
           <button

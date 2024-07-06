@@ -42,11 +42,10 @@ const deployCDHContract: DeployFunction = async function (hre: HardhatRuntimeEnv
   const cdhContract = await hre.ethers.getContract<Contract>("CDH", deployer);
   console.log("🚀 Deploy CDH Contract:", await cdhContract.getAddress());
 
-  await cdhContract.safeMint(
-    deployer,
-    "https://res.cloudinary.com/dplp5wtzk/image/upload/v1715440386/token-monster/8.png",
-  );
-  console.log("💫 Mint CDH NFT");
+  // await cdhContract.safeMint(
+  //   deployer
+  // );
+  // console.log("💫 Mint CDH NFT");
 
   await cdhContract.registerFieldName(
     0,

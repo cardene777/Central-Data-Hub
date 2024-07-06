@@ -16,6 +16,7 @@
   "dependencies": {
     "@helia/mfs": "^3.0.6",
     "@heroicons/react": "~2.0.11",
+    "@irys/sdk": "^0.2.6",
     "@rainbow-me/rainbowkit": "~2.0.2",
     "@tanstack/react-query": "~5.28.6",
     "@uniswap/sdk-core": "~4.0.1",

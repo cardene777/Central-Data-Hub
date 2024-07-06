@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   5555: {
     CDH: {
-      address: "0xb2531b6730084CafE595d4579251b9983FADc717",
+      address: "0xAA9cAfF807A0981145b351E61E9766254de46A5F",
       abi: [
         {
           inputs: [
@@ -898,7 +898,13 @@ const deployedContracts = {
             },
           ],
           name: "safeMint",
-          outputs: [],
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
           stateMutability: "nonpayable",
           type: "function",
         },
@@ -1258,7 +1264,7 @@ const deployedContracts = {
       },
     },
     ERC6551Account: {
-      address: "0x95a8eD5026AC829C4F02c051C2553891c9fD98C7",
+      address: "0xDFc02e7eD1A119ceDD91cA4ff030F01F450912a9",
       abi: [
         {
           inputs: [
@@ -1422,7 +1428,7 @@ const deployedContracts = {
       },
     },
     ERC6551Registry: {
-      address: "0x9A898F020Db575A5Dd951189B8D44f6e4d84FF5B",
+      address: "0xB25569E3F148941b0b07e4BfbF4Dca71BfBbb804",
       abi: [
         {
           inputs: [],

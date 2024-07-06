@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.23;
+pragma solidity 0.8.25;
 
 import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { IERC721 } from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
@@ -15,11 +15,14 @@ contract CDH is ICDH, ERC721, ERC721Enumerable, ERC721Burnable {
 	// =============================================================
 	//                           STORAGE
 	// =============================================================
+	using Strings for uint256;
 
 	uint256 private _nextTokenId;
 	address public erc6551Account;
 	address public erc6551Registry;
 	uint256 public chainId;
+
+	// string public ipfsBaseUri;
 
 	// tokenId => fieldNumber => fieldValue
 	mapping(uint256 => mapping(uint256 => string)) public override metadatas;
@@ -90,6 +93,7 @@ contract CDH is ICDH, ERC721, ERC721Enumerable, ERC721Burnable {
 		erc6551Registry = _erc6551Registry;
 		erc6551Account = _erc6551Account;
 		chainId = 5555;
+		// ipfsBaseUri = "https://ipfs.io/ipfs/";
 	}
 
 	// =============================================================
@@ -98,9 +102,8 @@ contract CDH is ICDH, ERC721, ERC721Enumerable, ERC721Burnable {
 
 	/// @notice safe mint
 	/// @param to to
-	/// @param uri uri
-	function safeMint(address to, string memory uri) public notOwnNFT(to) {
-		uint256 tokenId = _nextTokenId++;
+	function safeMint(address to, string calldata uri) public notOwnNFT(to) returns (uint256 tokenId) {
+		tokenId = _nextTokenId++;
 		_safeMint(to, tokenId);
 		address tbaAccount = IERC6551Registry(erc6551Registry).createAccount(
 			erc6551Account,
@@ -113,23 +116,8 @@ contract CDH is ICDH, ERC721, ERC721Enumerable, ERC721Burnable {
 		eoaToTbaAccount[to] = tbaAccount;
 		eoaToTokenId[to] = tokenId;
 
-		// save DACS or ...
-		tokenMetadatas[tokenId] = string(
-			abi.encodePacked(
-				"data:application/json;base64,",
-				Base64.encode(
-					bytes(
-						abi.encodePacked(
-							'{"name": "CDH #',
-							Strings.toString(tokenId),
-							'", "description": "CDH NFT", "image": "',
-							uri,
-							'"}'
-						)
-					)
-				)
-			)
-		);
+		// save DACS or IPFS or Arweave
+		tokenMetadatas[tokenId] = uri;
 	}
 
 	/// @notice set permitted editor

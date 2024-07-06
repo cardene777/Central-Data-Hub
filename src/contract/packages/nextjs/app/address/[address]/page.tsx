@@ -4,8 +4,11 @@ import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
+import axios from "axios";
 import { useReadContract } from "wagmi";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
+import { DOMAIN_CONTRACT_ADDRESS } from "~~/lib/config";
+import domain from "~~/utils/Domains.json";
 
 const AddressPage = () => {
   const { data: deployedContractData } = useDeployedContractInfo("CDH");
@@ -14,13 +17,12 @@ const AddressPage = () => {
 
   const searchParams = useSearchParams();
   const tokenId = searchParams.get("index");
-  console.log(`tokenId: ${tokenId}`);
   const tba = searchParams.get("tba");
 
   const params = useParams();
   const { address } = params;
 
-  const { refetch, error } = useReadContract({
+  const { data, refetch, error } = useReadContract({
     address: deployedContractData?.address,
     functionName: "tokenURI",
     abi: deployedContractData?.abi,
@@ -32,20 +34,34 @@ const AddressPage = () => {
     },
   });
 
+  const { data: ownDomainName, refetch: getOwnerDomains } = useReadContract({
+    address: DOMAIN_CONTRACT_ADDRESS,
+    functionName: "getDomainsByOwner",
+    abi: domain.abi,
+    args: [address],
+    chainId: 5555,
+    query: {
+      enabled: true,
+      retry: true,
+    },
+  });
+
   const getMetadata = useCallback(async () => {
     const metadata = await refetch();
-    const encodedData = await metadata.data;
-    const decodeBase64 = (base64: string) => {
+    console.log(`metadata: ${JSON.stringify(metadata)}`);
+    const metadataUrl = metadata.data as string;
+
+    const fetchJsonFromUrl = async (url: string) => {
       try {
-        const base64String = base64.split(",")[1];
-        const jsonStr = Buffer.from(base64String, "base64").toString("utf-8");
-        return JSON.parse(jsonStr);
+        const response = await axios.get(url);
+        return response.data;
       } catch (e) {
-        console.error("Failed to decode base64 data", e);
+        console.error("Failed to fetch JSON data from URL", e);
         return null;
       }
     };
-    const metadataJson = decodeBase64(encodedData as string);
+
+    const metadataJson = await fetchJsonFromUrl(metadataUrl);
     console.log(`metadataJson: ${JSON.stringify(metadataJson)}`);
     if (metadataJson) {
       setMetadata(metadataJson);
@@ -54,7 +70,8 @@ const AddressPage = () => {
 
   useEffect(() => {
     getMetadata();
-  }, [deployedContractData, getMetadata, tokenId]);
+    getOwnerDomains();
+  }, [deployedContractData, getMetadata, getOwnerDomains, tokenId]);
 
   useEffect(() => {
     if (error) {
@@ -84,9 +101,21 @@ const AddressPage = () => {
           </p>
           <p className="text-gray-700 text-base">
             <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-              CVCDNS
+              Token URI
             </span>{" "}
-            <span className="break-all block">CrossValueChainDomainNameService ...</span>
+            <Link
+              target="_blank"
+              className="break-all block w-2/3 text-blue-500 underline"
+              href={(data as string) ?? ""}
+            >
+              {(data as string) ?? ""}
+            </Link>
+          </p>
+          <p className="text-gray-700 text-base">
+            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+              DNS
+            </span>{" "}
+            <span className="break-all block">{ownDomainName as any}</span>
           </p>
         </div>
         <div className="flex flex-col justify-start items-start w-1/2">
