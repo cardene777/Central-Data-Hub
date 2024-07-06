@@ -5,7 +5,7 @@ NFT to manage all data in one place.
 ## Abstract
 
 NFT contract to manage all data in one place.
-The Cross Value Chain can contain a variety of data in on-chain storage called "DACS".
+The Xenea can contain a variety of data in on-chain storage called "DACS".
 
 [https://sustainable.cross.technology/jp/crosstech/technology](https://sustainable.cross.technology/jp/crosstech/technology)
 [https://docs.crossvalue.io/whitepaper/dacs-node-architecture-and-sustainable-generation-manager](https://docs.crossvalue.io/whitepaper/dacs-node-architecture-and-sustainable-generation-manager)
@@ -24,7 +24,7 @@ Some NFTs are free to customise their metadata, but they are only aware of the m
 [https://docs.opensea.io/docs/metadata-standards](https://docs.opensea.io/docs/metadata-standards)
 
 This metadata can be extended to define a variety of fields, thus broadening the use of NFT.
-The Cross Value Chain natively supports "DACS" on-chain storage as part of the chain, so a variety of data can be placed here.
+The Xenea natively supports "DACS" on-chain storage as part of the chain, so a variety of data can be placed here.
 Details on how to access this data could not be read from the documentation, but we believe it can probably be accessed via a URL or similar.
 By defining multiple data in metadata using the key-value method, where the URL is the value and the field name is the key, it is possible to manage various data in the metadata.
 
@@ -310,7 +310,7 @@ The current design assumes that DACS cannot be accessed from the contract, and t
 Initially, the design assumes that DACS data will be stored on IPFS or similar.
 If the DACS can be accessed from the contract, we are considering inscribing metadata on-chain.
 Managing metadata directly from the contract is also done in Ethereum.
-In the case of Cross Value Chain, the gas cost is not a major concern because of the low gas cost and the fact that the gas cost is incurred when registering DACS and IPFS URLs in CDH.
+In the case of Xenea, the gas cost is not a major concern because of the low gas cost and the fact that the gas cost is incurred when registering DACS and IPFS URLs in CDH.
 Also, data capacity is not a problem unless a significant amount of data is stored, as the data used in Dapps and BCGs is not that large.
 
 ### Delete Metadata Field.
@@ -334,7 +334,7 @@ Managing them in a separate mapping array makes them easier to access and ensure
 
 ### Integration with Name Service
 
-~~When a Name Service like ENS is created on the Cross Value Chain, we are also considering linking to that Name Service.~~
+~~When a Name Service like ENS is created on the Xenea, we are also considering linking to that Name Service.~~
 ~~We are trying to provide wider access, for example by enabling data to be retrieved in a way that is tied to a specific Name Service.~~
 
 In conjunction with CDNs, addresses can be associated with human-identifiable names.
@@ -350,7 +350,7 @@ Name services called CDNs exist on CROSS VALUE CHAIN, so CDH can be used more ea
 ### Price it or not
 
 We are considering putting a per-address price on NFT's Mint.
-Cross Value Chain is cheap, so if you have a lot of addresses, you can only issue so many of them.
+Xenea is cheap, so if you have a lot of addresses, you can only issue so many of them.
 There is no limit to the number of NFTs that can be issued, so issuing unlimited NFTs is not a problem.
 However, you may need to pay for the creation of communities or other mechanisms in the future.
 Putting a price on the Mint of the NFT will allow sales here to be used for future updates.

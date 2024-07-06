@@ -5,7 +5,7 @@
 ## Abstract
 
 あらゆるデータを一括管理する NFT コントラクトです。
-Cross Value Chain には"DACS"と呼ばれるオンチェーンストレージに様々なデータを載せることができます。
+Xenea には"DACS"と呼ばれるオンチェーンストレージに様々なデータを載せることができます。
 
 [https://sustainable.cross.technology/jp/crosstech/technology](https://sustainable.cross.technology/jp/crosstech/technology)
 [https://docs.crossvalue.io/whitepaper/dacs-node-architecture-and-sustainable-generation-manager](https://docs.crossvalue.io/whitepaper/dacs-node-architecture-and-sustainable-generation-manager)
@@ -24,7 +24,7 @@ NFT によっては自由にメタデータをカスタムしているが、Open
 [https://docs.opensea.io/docs/metadata-standards](https://docs.opensea.io/docs/metadata-standards)
 
 このメタデータを拡張し、様々なフィールドを定義するようにすることで、NFT の活用の幅が広がります。
-Cross Value Chain ではチェーンとして、ネイティブにオンチェーンストレージである"DACS"をサポートしているため、ここに様々なデータを載せることができます。
+Xenea ではチェーンとして、ネイティブにオンチェーンストレージである"DACS"をサポートしているため、ここに様々なデータを載せることができます。
 このデータにアクセスする方法の詳細はドキュメントから読み取ることができませんでしたが、おそらく URL などでアクセスできると考えています。
 この URL を値（value）に、フィールド名をキー（key）にした key-value 方式でデータをメタデータ内に複数定義することで、メタデータで様々なデータを管理することができるようになります。
 
@@ -311,7 +311,7 @@ Iris というプロダクトがまさに同じような仕組みを提供して
 もし、コントラクトから DACS にアクセスできるようであれば、オンチェーンにメタデータを刻むことも考えています。
 コントラクトから直接メタデータを管理することは Ethereum でも行われています。
 ただ、更新のたびにガス代がかかったり、データ容量の問題があります。
-Cross Value Chain の場合は、ガス代安い点と、CDH では DACS や IPFS の URL を登録するの時にガス代が発生するためガス代の点はあまり気にする必要はありません。
+Xenea の場合は、ガス代安い点と、CDH では DACS や IPFS の URL を登録するの時にガス代が発生するためガス代の点はあまり気にする必要はありません。
 また、データ容量についても、Dapps や BCG で使用されるデータはそこまで多くないので、相当量のデータを保存しない限り問題にはなりません。
 
 ### Metadata Field の削除
@@ -335,23 +335,23 @@ IPFS や Arweave など、分散型ストレージはたくさんあります。
 
 ### Name Service との統合
 
-~~Cross Value Chain 上に ENS のような Name Service が作成されたとき、その Name Service との連携も考えています。~~
+~~Xenea 上に ENS のような Name Service が作成されたとき、その Name Service との連携も考えています。~~
 ~~特定の Name Service に紐づく形でデータを取得できるようにするなど、より幅広いアクセスを提供しようとしています。~~
 
-CDNと連携して、アドレスに人間が識別しやすい名前を紐づけられるようにしました。
+CDN と連携して、アドレスに人間が識別しやすい名前を紐づけられるようにしました。
 
 [CDN](https://github.com/mashharuki/CDN/tree/main)
 
-CDHはアドレス1つにつき1つしか所有できません。
+CDH はアドレス 1 つにつき 1 つしか所有できません。
 そのため、そのアドレスに紐づく情報を全て管理できますが、アドレス名を覚えるのは大変です。
 アドレスポイズニングなどが流行っていることもあり、識別しやすい名前をつけることが望ましいです。
-ここで役に立つのがName Serviceと呼ばれる、アドレスに識別しやすい名前を紐づけるサービスです。
-CDNと呼ばれるName ServiceがCROSS VALUE CHAIN上に存在するため、そのサービスと連携することでよりCDHが使用しやすくなります。
+ここで役に立つのが Name Service と呼ばれる、アドレスに識別しやすい名前を紐づけるサービスです。
+CDN と呼ばれる Name Service が CROSS VALUE CHAIN 上に存在するため、そのサービスと連携することでより CDH が使用しやすくなります。
 
 ### 価格をつけるか
 
 NFT の Mint にあたり価格をつけるか検討しています。
-Cross Value Chain が安いため、アドレスをたくさん用意すればその分だけ発行できてしまいます。
+Xenea が安いため、アドレスをたくさん用意すればその分だけ発行できてしまいます。
 特に上限は設けないため、無制限に NFT を発行すること自体は問題ないです。
 しかし、今後コミュニティなどを作成したり、他の仕組みなどを導入する際に費用が必要になるかもしれません。
 NFT の Mint に価格をつけることで、ここでの売り上げが将来のアップデートに活用できるようになります。
