@@ -16,8 +16,8 @@ import domain from "~~/utils/Domains.json";
 
 const AddressPage = () => {
   const { data: deployedContractData } = useDeployedContractInfo("CDH");
-  const { data: sampleERC721ContractData } = useDeployedContractInfo("SampleERC721");
-  const { data: sampleERC1155ContractData } = useDeployedContractInfo("SampleERC1155");
+  // const { data: sampleERC721ContractData } = useDeployedContractInfo("SampleERC721");
+  // const { data: sampleERC1155ContractData } = useDeployedContractInfo("SampleERC1155");
 
   const [metadata, setMetadata] = useState<any>({});
   const [copiedText, setCopiedText] = useState<{ [key: string]: boolean }>({});
