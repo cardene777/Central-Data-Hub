@@ -14,6 +14,10 @@
     "vercel:yolo": "vercel --build-env NEXT_PUBLIC_IGNORE_BUILD_ERROR=true"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-regular-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "latest",
     "@helia/mfs": "^3.0.6",
     "@heroicons/react": "~2.0.11",
     "@irys/sdk": "^0.2.6",
@@ -31,9 +35,10 @@
     "nprogress": "~0.2.0",
     "qrcode.react": "~3.1.0",
     "react": "~18.2.0",
-    "react-copy-to-clipboard": "~5.1.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "~18.2.0",
     "react-hot-toast": "~2.4.0",
+    "react-toastify": "^10.0.5",
     "use-debounce": "~8.0.4",
     "usehooks-ts": "2.13.0",
     "viem": "^2.10.1",

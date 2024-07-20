@@ -14,8 +14,7 @@ const deployCDHContract: DeployFunction = async function (hre: HardhatRuntimeEnv
     autoMine: true,
   });
 
-  const erc6551AccountContract = await hre.ethers.getContract<Contract>
-    ("ERC6551Account", deployer);
+  const erc6551AccountContract = await hre.ethers.getContract<Contract>("ERC6551Account", deployer);
   const erc6551AccountAddress = await erc6551AccountContract.getAddress();
   console.log("🚀 Deploy ERC6551Account Contract:", erc6551AccountAddress);
 
@@ -47,11 +46,10 @@ const deployCDHContract: DeployFunction = async function (hre: HardhatRuntimeEnv
   // );
   // console.log("💫 Mint CDH NFT");
 
-  await cdhContract.registerFieldName(
-    0,
-    "Central Data Hub",
-  );
-  console.log("💫 Register CDH Field Name");
+  if ((await cdhContract.fieldNames(0)) !== "Central Data Hub") {
+    await cdhContract.registerFieldName(0, "Central Data Hub");
+    console.log("💫 Register CDH Field Name");
+  }
 };
 
 export default deployCDHContract;
