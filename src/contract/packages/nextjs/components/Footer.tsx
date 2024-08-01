@@ -56,8 +56,8 @@ export const Footer = () => {
             </div>
             <span>·</span>
             <div className="text-center">
-              <a href="https://crossvalue.io/" target="_blank" rel="noreferrer" className="link">
-                CROSSVALUE Chain
+              <a href="https://xenea.io" target="_blank" rel="noreferrer" className="link">
+                Xenea
               </a>
             </div>
             <span>·</span>

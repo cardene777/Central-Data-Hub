@@ -5,7 +5,14 @@ import { useRouter } from "next/navigation";
 import { useReadContract } from "wagmi";
 import { Contract, ContractName } from "~~/utils/scaffold-eth/contract";
 
-export const Card = ({ deployedContractData }: { deployedContractData: Contract<ContractName> }) => {
+export const Card = ({
+  deployedContractData,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ownDomainName,
+}: {
+  deployedContractData: Contract<ContractName>;
+  ownDomainName: string[];
+}) => {
   const router = useRouter();
   const { refetch, error } = useReadContract({
     address: deployedContractData?.address,
@@ -51,7 +58,6 @@ export const Card = ({ deployedContractData }: { deployedContractData: Contract<
               onClick={() => changeAddressInfoPage(index, address, tbaAccounts[index])}
               className="w-full text-left max-w-sm rounded overflow-hidden shadow-lg flex flex-col items-start"
             >
-              {/* <Image className="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains" /> */}
               <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">CDH #{index}</div>
                 <p className="text-gray-700 text-base">
@@ -70,7 +76,12 @@ export const Card = ({ deployedContractData }: { deployedContractData: Contract<
                   <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
                     CVCDNS
                   </span>{" "}
-                  <span className="break-all block">CrossValueChainDomainNameService ...</span>
+                  {/* {Array.isArray(ownDomainName) && ownDomainName.length > 0 ? (
+                    <span className="break-all block">{ownDomainName}</span>
+                  ) : (
+                    <span className="break-all block">...</span>
+                  )} */}
+                  <span className="break-all block">...</span>
                 </p>
               </div>
             </button>

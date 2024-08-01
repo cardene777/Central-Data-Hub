@@ -14,9 +14,13 @@ import { Contract, ContractName } from "~~/utils/scaffold-eth/contract";
 export const CDHMint = ({
   deployedContractData,
   address,
+  ownDomainName,
+  getOwnerDomains,
 }: {
   deployedContractData: Contract<ContractName>;
   address: any;
+  ownDomainName: string[];
+  getOwnerDomains: () => void;
 }) => {
   const router = useRouter();
   const writeTxn = useTransactor();
@@ -78,23 +82,10 @@ export const CDHMint = ({
     },
   });
 
-  const { data: ownDomainName, refetch: getOwnerDomains } = useReadContract({
-    address: DOMAIN_CONTRACT_ADDRESS,
-    functionName: "getDomainsByOwner",
-    abi: domain.abi,
-    args: [address],
-    chainId: 5555,
-    query: {
-      enabled: true,
-      retry: true,
-    },
-  });
-
   const handleWrite = async () => {
     if (writeContractAsync) {
       try {
         const metadataUri = await uploadMetadata(name, uri);
-        console.log(`metadataUri: ${metadataUri}`);
         const makeWriteWithParams = () =>
           writeContractAsync({
             address: deployedContractData?.address,
@@ -103,7 +94,6 @@ export const CDHMint = ({
             args: [address, metadataUri],
           });
         await writeTxn(makeWriteWithParams);
-        console.log(`result: ${result}`);
       } catch (e: any) {
         console.error("⚡️ ~ file: WriteOnlyFunctionForm.tsx:handleWrite ~ error", e);
       }
@@ -111,12 +101,9 @@ export const CDHMint = ({
   };
 
   const handleCDNWrite = async () => {
-    console.log("start handleCDNWrite");
     if (writeContractAsync) {
-      console.log("start writeContractAsync");
       try {
         const price = await getPrice();
-        console.log(`price: ${price}`);
         const makeWriteWithParams = () =>
           writeContractAsync({
             address: DOMAIN_CONTRACT_ADDRESS,
@@ -126,7 +113,7 @@ export const CDHMint = ({
             value: BigInt(price.data as any),
           });
         await writeTxn(makeWriteWithParams);
-        await getOwnerDomains();
+        getOwnerDomains();
       } catch (e: any) {
         console.error("⚡️ ~ file: WriteOnlyFunctionForm.tsx:handleWrite ~ error", e);
       }
@@ -140,7 +127,6 @@ export const CDHMint = ({
 
   const getMetadata = useCallback(async () => {
     const metadata = await metadataRefetch();
-    console.log(`metadata: ${metadata}`);
     setMetadataUri(metadata.data ?? "");
   }, [metadataRefetch]);
 
@@ -241,20 +227,18 @@ export const CDHMint = ({
               )}
             </div>
           </button>
-          <div className="flex flex-row space-x-5">
-            {/* <button
-              onClick={() => setShowArweaveModal(true)}
-              className="bg-secondary px-8 py-2 text-white rounded-md text-lg font-semibold"
-            >
-              Add Metadata
-            </button> */}
-            <button
-              onClick={() => setShowModal(true)}
-              className="bg-secondary px-8 py-2 text-white rounded-md text-lg font-semibold"
-            >
-              Mint CDN
-            </button>
-          </div>
+          {Array.isArray(ownDomainName) && ownDomainName.length > 0 ? (
+            <></>
+          ) : (
+            <div className="flex flex-row space-x-5">
+              <button
+                onClick={() => setShowModal(true)}
+                className="bg-secondary px-8 py-2 text-white rounded-md text-lg font-semibold"
+              >
+                Mint CDN
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <>

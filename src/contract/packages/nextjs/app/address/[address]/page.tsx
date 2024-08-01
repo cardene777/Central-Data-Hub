@@ -10,6 +10,7 @@ import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 import { useReadContract } from "wagmi";
+import { AttributeCard } from "~~/components/AttributeCard";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { DOMAIN_CONTRACT_ADDRESS } from "~~/lib/config";
 import domain from "~~/utils/Domains.json";
@@ -61,7 +62,6 @@ const AddressPage = () => {
 
   const getMetadata = useCallback(async () => {
     const metadata = await refetch();
-    console.log(`metadata: ${JSON.stringify(metadata)}`);
     const metadataUrl = metadata.data as string;
 
     const fetchJsonFromUrl = async (url: string) => {
@@ -73,11 +73,11 @@ const AddressPage = () => {
         return null;
       }
     };
-
-    const metadataJson = await fetchJsonFromUrl(metadataUrl);
-    console.log(`metadataJson: ${JSON.stringify(metadataJson)}`);
-    if (metadataJson) {
-      setMetadata(metadataJson);
+    if (metadataUrl) {
+      const metadataJson = await fetchJsonFromUrl(metadataUrl);
+      if (metadataJson) {
+        setMetadata(metadataJson);
+      }
     }
   }, [refetch]);
 
@@ -184,6 +184,12 @@ const AddressPage = () => {
             </div>
           </div>
         </div>
+        {metadata.attributes && (
+          <div className="flex flex-col justify-start items-start w-full mt-10">
+            <p className="font-bold text-3xl mb-2 mt-10">Attribute</p>
+            <AttributeCard attributes={metadata.attributes} />
+          </div>
+        )}
       </div>
     </div>
   );
