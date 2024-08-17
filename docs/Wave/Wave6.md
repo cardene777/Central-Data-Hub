@@ -8,7 +8,6 @@ Creation of sample NFT sample contracts to be stored in ERC6551 format TBA contr
 Creation based on basic Openzeppelin contracts.
 
 
-
 ・NFT support for ERC6551 contracts
 
 Normally, in ERC721 and ERC1155 contracts, if the NFT is sent to a contract, it is checked if the contract can receive the NFT.

@@ -11,6 +11,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 import { useReadContract } from "wagmi";
 import { AttributeCard } from "~~/components/AttributeCard";
+import { LinkMetadata } from "~~/components/LinkMetadata";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { DOMAIN_CONTRACT_ADDRESS } from "~~/lib/config";
 import domain from "~~/utils/Domains.json";
@@ -94,9 +95,12 @@ const AddressPage = () => {
 
   return (
     <div className="px-6 py-4 mt-10">
-      <Link href="/" className="bg-secondary px-3 py-2 text-white rounded-md text-lg">
-        Home
-      </Link>
+      <div className="flex justify-between items-start">
+        <Link href="/" className="bg-secondary px-3 py-2 text-white rounded-md text-lg">
+          Home
+        </Link>
+        <LinkMetadata preMetadata={metadata} />
+      </div>
       <div className="flex flex-col justify-center items-center w-full">
         <div className="flex justify-around items-start w-full">
           <div className="flex flex-col justify-start items-start w-1/2">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AttributeCardModal } from "./AttributeCardModal";
+import { AttributeCardModal } from "~~/components/Modal/AttributeCardModal";
 
 const filedName: { [key: string]: string } = {
   "0": "Central Data Hab",

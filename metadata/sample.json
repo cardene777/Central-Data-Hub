@@ -1,0 +1,23 @@
+{
+    "name": "test",
+    "description": "test",
+    "image": "https://res.cloudinary.com/dplp5wtzk/image/upload/v1715440386/token-monster/7.png",
+    "attributes": [
+        {
+            "trait_type": "attack",
+            "value": 10
+        },
+        {
+            "trait_type": "defense",
+            "value": 10
+        },
+        {
+            "trait_type": "speed",
+            "value": 10
+        },
+        {
+            "trait_type": "health",
+            "value": 10
+        }
+    ]
+}

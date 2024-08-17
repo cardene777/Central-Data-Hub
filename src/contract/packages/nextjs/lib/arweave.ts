@@ -1,5 +1,6 @@
 import { WebIrys } from "@irys/sdk";
 import { BrowserProvider } from "ethers";
+import { PreMetadata } from "~~/interfaces/arweave";
 
 const getCDHJson = async (name: string, image: string) => {
   const nftMetadata = {
@@ -12,6 +13,19 @@ const getCDHJson = async (name: string, image: string) => {
         value: image,
       },
     ],
+  };
+
+  const jsonString = JSON.stringify(nftMetadata, null, 2);
+  return new Blob([jsonString], { type: "application/json" });
+};
+
+const getUpdateCDHJson = async (preMetadata: PreMetadata, fieldName: string, fieldValue: string) => {
+  const updatedAttributes = [...preMetadata.attributes, { trait_type: fieldName, value: fieldValue }];
+  const nftMetadata = {
+    name: preMetadata.name,
+    description: preMetadata.description,
+    image: preMetadata.image,
+    attributes: updatedAttributes,
   };
 
   const jsonString = JSON.stringify(nftMetadata, null, 2);
@@ -35,9 +49,13 @@ const getWebIrys = async () => {
   return webIrys;
 };
 
-export const uploadMetadata = async (name: string, image: string): Promise<string> => {
+export const uploadMetadata = async (
+  preMetadata: PreMetadata,
+  fieldName: string,
+  fieldValue: string,
+): Promise<string> => {
   const irys = await getWebIrys();
-  const metadataBlob = await getCDHJson(name, image);
+  const metadataBlob = await getUpdateCDHJson(preMetadata, fieldName, fieldValue);
   const metadataFile = new File([metadataBlob], `${name}.json`, {
     type: "application/json",
   });
@@ -53,26 +71,20 @@ export const uploadMetadata = async (name: string, image: string): Promise<strin
   }
 };
 
-// export const updateImage = async (preResponse: { id: any }) => {
-//   const irys = await getIrys();
-//   const fileToUpload = "./images/light.png";
+export const updateMetadata = async (name: string, image: string, preResponse: { id: any }) => {
+  const irys = await getWebIrys();
+  const metadataBlob = await getCDHJson(name, image);
+  const metadataFile = new File([metadataBlob], `${name}.json`, {
+    type: "application/json",
+  });
 
-//   // Get size of file
-//   const { size } = await fs.promises.stat(fileToUpload);
-//   // Get cost to upload "size" bytes
-//   const price = await irys.getPrice(size);
-//   console.log(`Uploading ${size} bytes costs ${irys.utils.fromAtomic(price)} ${token}`);
-//   // Fund the node
-//   await irys.fund(price, 1.5);
-
-//   // Upload metadata
-//   try {
-//     const tags = [{ name: "Root-TX", value: preResponse.id }];
-//     const response = await irys.uploadFile(fileToUpload, { tags });
-//     console.log(`File uploaded ==> https://gateway.irys.xyz/mutable/${preResponse.id}`);
-//     console.log(`New File uploaded ==> https://gateway.irys.xyz/mutable/${response.id}`);
-//     console.log(`response: ${JSON.stringify(response)}`);
-//   } catch (e) {
-//     console.log("Error uploading file ", e);
-//   }
-// };
+  try {
+    const tags = [{ name: "Root-TX", value: preResponse.id }];
+    const response = await irys.uploadFile(metadataFile, { tags });
+    console.log(`File uploaded ==> https://gateway.irys.xyz/mutable/${preResponse.id}`);
+    console.log(`New File uploaded ==> https://gateway.irys.xyz/mutable/${response.id}`);
+    console.log(`response: ${JSON.stringify(response)}`);
+  } catch (e) {
+    console.log("Error uploading file ", e);
+  }
+};

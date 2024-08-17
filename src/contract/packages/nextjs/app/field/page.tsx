@@ -31,7 +31,7 @@ const Field: NextPage = () => {
       try {
         const makeWriteWithParams = () =>
           writeContractAsync({
-            address: deployedContractData?.address || "",
+            address: (deployedContractData?.address as `0x${string}`) || "",
             functionName: "registerFieldName",
             abi: deployedContractData?.abi || [],
             args: [BigInt(fieldId), name],

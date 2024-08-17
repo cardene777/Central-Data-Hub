@@ -50,7 +50,7 @@ yarn deploy
 - Deploy NFT
 
 ```bash
-yarn deploy --deploy-scripts 02_deploy_nft.ts
+yarn deploy --deploy-scripts 02_deploy_sample_contract.ts
 ```
 
 1. On a third terminal, start your NextJS app:
