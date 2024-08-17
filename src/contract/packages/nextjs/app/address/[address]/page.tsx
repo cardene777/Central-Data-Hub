@@ -99,7 +99,7 @@ const AddressPage = () => {
         <Link href="/" className="bg-secondary px-3 py-2 text-white rounded-md text-lg">
           Home
         </Link>
-        <LinkMetadata preMetadata={metadata} />
+        <LinkMetadata preMetadata={metadata} preMetadataId={data as string} />
       </div>
       <div className="flex flex-col justify-center items-center w-full">
         <div className="flex justify-around items-start w-full">

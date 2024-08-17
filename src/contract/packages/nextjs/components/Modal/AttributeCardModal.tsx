@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,10 +13,35 @@ export const AttributeCardModal = ({
   fieldName: string;
   closeModal: () => void;
 }) => {
+  const [jsonData, setJsonData] = useState<string | null>(null);
+
   const isImageUrl = (url: string) => {
     return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(url);
   };
-  if (!isModalOpen) return null;
+
+  useEffect(() => {
+    if (selectedAttribute && selectedAttribute.value && !isImageUrl(selectedAttribute.value)) {
+      fetch(selectedAttribute.value)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("JSON data:", data);
+          setJsonData(JSON.stringify(data, null, 2));
+        })
+        .catch(error => {
+          console.error("Error fetching JSON:", error);
+        });
+    } else {
+      setJsonData(null);
+    }
+  }, [selectedAttribute]);
+
+  if (!isModalOpen || !selectedAttribute) return null;
+
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -25,7 +51,11 @@ export const AttributeCardModal = ({
         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
           &#8203;
         </span>
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div
+          className={`inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle ${
+            isImageUrl(selectedAttribute.value) ? "sm:max-w-lg" : "sm:max-w-3xl"
+          } sm:w-full`}
+        >
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center sm:mt-0 sm:text-left">
@@ -57,7 +87,12 @@ export const AttributeCardModal = ({
                         height={500}
                       />
                     ) : (
-                      <span className="break-all block">{selectedAttribute.value}</span>
+                      <pre
+                        className="mt-2 bg-gray-100 p-4 rounded overflow-x-auto"
+                        style={{ whiteSpace: "pre-wrap", wordWrap: "break-word", maxWidth: "100%" }}
+                      >
+                        {jsonData}
+                      </pre>
                     )}
                   </p>
                 </div>

@@ -71,6 +71,9 @@ Run smart contract test with `yarn hardhat:test`
 |    **ERC6551Account**    | `0xDFc02e7eD1A119ceDD91cA4ff030F01F450912a9` | https://testnet.crossvaluescan.com/address/0xDFc02e7eD1A119ceDD91cA4ff030F01F450912a9 |
 |    **ERC6551Registry**    | `0xB25569E3F148941b0b07e4BfbF4Dca71BfBbb804` | https://testnet.crossvaluescan.com/address/0xB25569E3F148941b0b07e4BfbF4Dca71BfBbb804 |
 
-## Sample Image
+## Sample Data
 
+- Sample Image
 - [https://res.cloudinary.com/dplp5wtzk/image/upload/v1715440386/token-monster/8.png](https://res.cloudinary.com/dplp5wtzk/image/upload/v1715440386/token-monster/8.png)
+- Sample Metadata
+- [https://res.cloudinary.com/dxqgqsi0r/raw/upload/v1723883455/metadata/sample](https://res.cloudinary.com/dxqgqsi0r/raw/upload/v1723883455/metadata/sample)

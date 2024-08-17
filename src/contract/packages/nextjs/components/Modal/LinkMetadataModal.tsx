@@ -1,21 +1,27 @@
 import { useState } from "react";
 import { PreMetadata } from "~~/interfaces/arweave";
-import { uploadMetadata } from "~~/lib/arweave";
+import { updateMetadata } from "~~/lib/arweave";
+
 
 export const LinkMetadataModal = ({
   isModalOpen,
   setIsModalOpen,
   preMetadata,
+  preMetadataId,
 }: {
   isModalOpen: boolean;
   setIsModalOpen: (isModalOpen: boolean) => void;
   preMetadata: PreMetadata;
+  preMetadataId: string;
 }) => {
   const [fieldId, setFieldId] = useState("");
   const [link, setLink] = useState<string>("");
 
+  console.log(`preMetadataId`, preMetadataId);
+
   const linkMetadata = async () => {
-    await uploadMetadata(preMetadata, fieldId, link);
+    await updateMetadata(preMetadata, fieldId, link, preMetadataId);
+    setIsModalOpen(false);
   };
 
   if (!isModalOpen) return null;
@@ -50,7 +56,7 @@ export const LinkMetadataModal = ({
                 onClick={linkMetadata}
                 className="bg-secondary px-8 py-2 text-white rounded-md text-lg mt-2 font-semibold"
               >
-                Register
+                Link Metadata
               </button>
             </div>
           </div>

@@ -2,6 +2,7 @@ import { WebIrys } from "@irys/sdk";
 import { BrowserProvider } from "ethers";
 import { PreMetadata } from "~~/interfaces/arweave";
 
+
 const getCDHJson = async (name: string, image: string) => {
   const nftMetadata = {
     name: `CDH ${name}`,
@@ -20,13 +21,24 @@ const getCDHJson = async (name: string, image: string) => {
 };
 
 const getUpdateCDHJson = async (preMetadata: PreMetadata, fieldName: string, fieldValue: string) => {
-  const updatedAttributes = [...preMetadata.attributes, { trait_type: fieldName, value: fieldValue }];
+  const updatedAttributes = preMetadata.attributes.map((attribute: any) => {
+    if (attribute.trait_type === fieldName) {
+      return { ...attribute, value: fieldValue };
+    }
+    return attribute;
+  });
+  const isFieldExist = preMetadata.attributes.some((attribute: any) => attribute.trait_type === fieldName);
+  if (!isFieldExist) {
+    updatedAttributes.push({ trait_type: fieldName, value: fieldValue });
+  }
   const nftMetadata = {
     name: preMetadata.name,
     description: preMetadata.description,
     image: preMetadata.image,
     attributes: updatedAttributes,
   };
+
+  console.log(`nftMetadata`, nftMetadata);
 
   const jsonString = JSON.stringify(nftMetadata, null, 2);
   return new Blob([jsonString], { type: "application/json" });
@@ -49,13 +61,9 @@ const getWebIrys = async () => {
   return webIrys;
 };
 
-export const uploadMetadata = async (
-  preMetadata: PreMetadata,
-  fieldName: string,
-  fieldValue: string,
-): Promise<string> => {
+export const uploadMetadata = async (name: string, image: string): Promise<string> => {
   const irys = await getWebIrys();
-  const metadataBlob = await getUpdateCDHJson(preMetadata, fieldName, fieldValue);
+  const metadataBlob = await getCDHJson(name, image);
   const metadataFile = new File([metadataBlob], `${name}.json`, {
     type: "application/json",
   });
@@ -71,17 +79,22 @@ export const uploadMetadata = async (
   }
 };
 
-export const updateMetadata = async (name: string, image: string, preResponse: { id: any }) => {
+export const updateMetadata = async (
+  preMetadata: PreMetadata,
+  fieldName: string,
+  fieldValue: string,
+  preMetadataId: string,
+) => {
   const irys = await getWebIrys();
-  const metadataBlob = await getCDHJson(name, image);
-  const metadataFile = new File([metadataBlob], `${name}.json`, {
+  const metadataBlob = await getUpdateCDHJson(preMetadata, fieldName, fieldValue);
+  const metadataFile = new File([metadataBlob], `${preMetadata.name}.json`, {
     type: "application/json",
   });
 
   try {
-    const tags = [{ name: "Root-TX", value: preResponse.id }];
+    const tags = [{ name: "Root-TX", value: preMetadataId }];
     const response = await irys.uploadFile(metadataFile, { tags });
-    console.log(`File uploaded ==> https://gateway.irys.xyz/mutable/${preResponse.id}`);
+    console.log(`File uploaded ==> https://gateway.irys.xyz/mutable/${preMetadataId}`);
     console.log(`New File uploaded ==> https://gateway.irys.xyz/mutable/${response.id}`);
     console.log(`response: ${JSON.stringify(response)}`);
   } catch (e) {
