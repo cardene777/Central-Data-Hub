@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { Key, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
@@ -18,12 +18,10 @@ import domain from "~~/utils/Domains.json";
 
 const AddressPage = () => {
   const { data: deployedContractData } = useDeployedContractInfo("CDH");
-  // const { data: sampleERC721ContractData } = useDeployedContractInfo("SampleERC721");
-  // const { data: sampleERC1155ContractData } = useDeployedContractInfo("SampleERC1155");
 
   const [metadata, setMetadata] = useState<any>({});
   const [copiedText, setCopiedText] = useState<{ [key: string]: boolean }>({});
-
+  const [sampleERC721Data, setSampleERC721Data] = useState<any>({});
   const searchParams = useSearchParams();
   const tokenId = searchParams.get("index");
   const tba = searchParams.get("tba");
@@ -82,6 +80,15 @@ const AddressPage = () => {
     }
   }, [refetch]);
 
+  const getSampleERC721Data = useCallback(async () => {
+    const data = await fetch(`/api/query/${address}`, {
+      method: "POST",
+    });
+    const queryData = await data.json();
+    console.log(`userData JSON: ${JSON.stringify(queryData)}`);
+    setSampleERC721Data(queryData.data);
+  }, [address]);
+
   useEffect(() => {
     getMetadata();
     getOwnerDomains();
@@ -92,6 +99,10 @@ const AddressPage = () => {
       console.error(error);
     }
   }, [error]);
+
+  useEffect(() => {
+    getSampleERC721Data();
+  }, [address, getSampleERC721Data]);
 
   return (
     <div className="px-6 py-4 mt-10">
@@ -156,7 +167,7 @@ const AddressPage = () => {
             {metadata.image && <Image src={metadata.image} alt={metadata.name} width={500} height={500} />}
           </div>
         </div>
-        <div className="flex flex-col justify-start items-start w-full mt-10">
+        {/* <div className="flex flex-col justify-start items-start w-full mt-10">
           <p className="font-bold text-3xl mb-2 mt-10">TBA Hold NFT</p>
           <div className="flex flex-row justify-start items-start w-full mt-10 space-x-2">
             <div className="relative">
@@ -186,6 +197,39 @@ const AddressPage = () => {
               />
               <div className="absolute top-0 right-0 bg-black bg-opacity-30 text-white p-1">SampleERC1155</div>
             </div>
+          </div>
+        </div> */}
+        <div className="flex flex-col justify-start items-start w-full mt-10">
+          <p className="font-bold text-3xl mb-2 mt-10">TBA Hold NFT</p>
+          <div className="grid grid-cols-5 gap-4  w-full mt-10 space-x-2">
+            {sampleERC721Data &&
+              sampleERC721Data.allSampleErc721Transfers &&
+              sampleERC721Data.allSampleErc721Transfers.nodes &&
+              sampleERC721Data.allSampleErc721Transfers.nodes.length > 0 &&
+              sampleERC721Data.allSampleErc721Transfers.nodes.map(
+                (node: { contractAddress: string; tokenId: any }, index: Key | null | undefined) => (
+                  <Link
+                    href={`hhttps://testnet.crossvaluescan.com/address/${node.contractAddress.trim()}`}
+                    key={index}
+                    passHref
+                    target="_blank"
+                    className="relative cursor-pointer w-[200px] h-[200px]"
+                  >
+                    <Image
+                      src={`https://res.cloudinary.com/dplp5wtzk/image/upload/v1715440386/token-monster/${
+                        Number(node.tokenId) + 1
+                      }.png`}
+                      alt={`Token ID ${node.tokenId}`}
+                      width={200}
+                      height={200}
+                    />
+                    <div className="absolute top-0 right-0 bg-black bg-opacity-30 text-white p-1">SampleERC721</div>
+                    <div className="absolute top-0 right-0 hover:bg-opacity-40 hover:bg-black w-full h-full p-1 opacity-0 hover:opacity-100 text-center flex items-center justify-center hover:text-white font-semibold text-3xl">
+                      Explorer
+                    </div>
+                  </Link>
+                ),
+              )}
           </div>
         </div>
         {metadata.attributes && (

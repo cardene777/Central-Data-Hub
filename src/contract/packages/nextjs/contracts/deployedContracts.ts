@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   5555: {
     CDH: {
-      address: "0x3784213D4D5057AF218dA4ee8149B5d35fca8e06",
+      address: "0xBe04e714d8B6809147B92d77124d4B088299701c",
       abi: [
         {
           inputs: [
@@ -1264,7 +1264,7 @@ const deployedContracts = {
       },
     },
     ERC6551Account: {
-      address: "0xf0048bBa2bE797458c4D68E081d928F009670655",
+      address: "0x84EB70E21C30128908A9F2d50124E9b4e56D8393",
       abi: [
         {
           inputs: [
@@ -1546,7 +1546,7 @@ const deployedContracts = {
       },
     },
     ERC6551Registry: {
-      address: "0xB25569E3F148941b0b07e4BfbF4Dca71BfBbb804",
+      address: "0xb9D26Ec506E8D665e1899a6728ab0BC46cFCEaAd",
       abi: [
         {
           inputs: [],
@@ -1678,7 +1678,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     SampleERC1155: {
-      address: "0xEc756B6ef29f5cba4871a11b6f745d3555BBE655",
+      address: "0xAa6E864fEc526625962C943ABb054a80e76a50BB",
       abi: [
         {
           inputs: [
@@ -2375,7 +2375,7 @@ const deployedContracts = {
       },
     },
     SampleERC20: {
-      address: "0x11A90C2d3e2FA036ff6C1A8DC960f4512eEE772d",
+      address: "0x253EFe6033Dc94605fE93fDd7A46256507304fF4",
       abi: [
         {
           inputs: [
@@ -3075,7 +3075,7 @@ const deployedContracts = {
       },
     },
     SampleERC721: {
-      address: "0xe6DFdAA1509B8d7efcB20c60296dF3A1b212a978",
+      address: "0x2665D69d173e584735E5f9D9707E892ec6EAb891",
       abi: [
         {
           inputs: [

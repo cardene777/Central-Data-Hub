@@ -2,7 +2,6 @@ import { WebIrys } from "@irys/sdk";
 import { BrowserProvider } from "ethers";
 import { PreMetadata } from "~~/interfaces/arweave";
 
-
 const getCDHJson = async (name: string, image: string) => {
   const nftMetadata = {
     name: `CDH ${name}`,

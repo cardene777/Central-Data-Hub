@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { LinkMetadataModal } from "~~/components/Modal/LinkMetadataModal";
 import { PreMetadata } from "~~/interfaces/arweave";
 
-
 export const LinkMetadata = ({ preMetadata, preMetadataId }: { preMetadata: PreMetadata; preMetadataId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   console.log(`preMetadata`, preMetadata);

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { PreMetadata } from "~~/interfaces/arweave";
 import { updateMetadata } from "~~/lib/arweave";
 
-
 export const LinkMetadataModal = ({
   isModalOpen,
   setIsModalOpen,
@@ -16,8 +15,6 @@ export const LinkMetadataModal = ({
 }) => {
   const [fieldId, setFieldId] = useState("");
   const [link, setLink] = useState<string>("");
-
-  console.log(`preMetadataId`, preMetadataId);
 
   const linkMetadata = async () => {
     await updateMetadata(preMetadata, fieldId, link, preMetadataId);

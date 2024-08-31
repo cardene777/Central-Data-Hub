@@ -27,7 +27,7 @@ contract SampleERC721 is ERC721, ERC721Burnable, Ownable {
     }
 
     function mint(address to) public {
-        uint256 tokenId = _nextTokenId++;
+        uint256 tokenId = ++_nextTokenId;
         _safeMint(to, tokenId);
     }
 
